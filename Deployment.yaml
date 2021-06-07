@@ -21,7 +21,7 @@ spec:
       containers:
       - name: http-server
         image: ratanovvv/http_server:TAG_NAME
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         securityContext:
           allowPrivilegeEscalation: false
         startupProbe:
