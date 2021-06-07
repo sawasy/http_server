@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-server
+  labels:
+    app: http-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: http-server
+  template:
+    metadata:
+      labels:
+        app: http-server
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      securityContext:
+        runAsUser: 1001
+      containers:
+      - name: http-server
+        image: ratanovvv/http_server:TAG_NAME
+        imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false
+        startupProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:8080/healthcheck
+          failureThreshold: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:8080/healthcheck
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:8080/healthcheck
+          initialDelaySeconds: 15
+          periodSeconds: 20
