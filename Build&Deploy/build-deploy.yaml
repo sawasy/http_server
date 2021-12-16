@@ -1,0 +1,16 @@
+---
+
+- hosts: localhost
+  any_errors_fatal: true
+  gather_facts: false
+  tasks:
+  - name: Tag latest image as previous
+    command: docker tag http-server:latest http-server:previous    
+  - name: build the image
+    command: docker build -t http-server /mnt/c/Users/moazzam.ali/Desktop/Adjust/http_server
+  - name: Install helm Chart
+    kubernetes.core.helm:
+      name: http-server
+      namespace: default
+      chart_ref: /mnt/c/Users/moazzam.ali/Desktop/Adjust/http_server/helm-http-server
+      force: yes
