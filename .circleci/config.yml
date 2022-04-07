@@ -1,0 +1,25 @@
+  deploy_docker:
+    docker:
+      - image: docker/compose
+    environment:
+      - PROJECT_NAME: "adjust"
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Docker build and push
+          command: |
+            docker build \
+              --build-arg COMMIT_REF=${CIRCLE_SHA1} \
+              --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` \
+              -t ${PROJECT_NAME} .
+            docker tag ${PROJECT_NAME}  chusalvarez/adjust
+            docker login -u chusalvarez -p ${DOCKER_KEY}
+            docker push chusalvarez/adjust
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - deploy_docker:
+          filters:
+            branches:
+              only: master
