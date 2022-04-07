@@ -2,7 +2,7 @@ version: 2
 jobs:
   deploy_docker:
     docker:
-      - image: docker/compose
+      - image: cimg/base:2021.04
     environment:
       - PROJECT_NAME: adjust
     steps:
@@ -21,6 +21,6 @@ workflows:
   build_test_deploy:
     jobs:
       - deploy_docker:
-          filters:
-            branches:
-              only: main
+#          filters:
+#            branches:
+#              only: main
