@@ -23,4 +23,4 @@ workflows:
       - deploy_docker:
           filters:
             branches:
-              only: master
+              only: main
