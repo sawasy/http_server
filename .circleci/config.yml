@@ -1,10 +1,11 @@
+version: 2
+jobs:
   deploy_docker:
     docker:
       - image: docker/compose
     environment:
-      - PROJECT_NAME: "adjust"
+      - PROJECT_NAME: adjust
     steps:
-      - setup_remote_docker
       - run:
           name: Docker build and push
           command: |
